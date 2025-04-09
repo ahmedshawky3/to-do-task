@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const app = require('./app');
 require('dotenv').config();
+const cors = require('cors');
 
 const PORT = process.env.PORT || 5000;
 
@@ -30,4 +31,16 @@ mongoose.connect(process.env.MONGODB_URI)
 process.on('unhandledRejection', (err) => {
     console.error('Unhandled Rejection:', err);
     process.exit(1);
-}); 
+});
+
+// CORS configuration
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'https://to-do-task-lilac.vercel.app',
+    'https://to-do-task.vercel.app'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+})); 
