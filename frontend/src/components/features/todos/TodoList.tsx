@@ -15,6 +15,7 @@ import {
 import { commonStyles } from '../../../theme';
 import TodoItem from './TodoItem';
 import { Todo, TodoFilters, PaginationData } from '../../../types/todo';
+import { useTheme } from '@mui/material/styles';
 
 interface TodoListProps {
   todos: Todo[];
@@ -43,6 +44,8 @@ const TodoList: React.FC<TodoListProps> = ({
   onDelete,
   onAddNewTask
 }) => {
+  const theme = useTheme();
+
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" my={4}>
@@ -149,46 +152,91 @@ const TodoList: React.FC<TodoListProps> = ({
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
         }
       }}>
-        <CardContent sx={{ py: 1, px: 2 }}>
+        <CardContent sx={{ py: 2, px: 1 }}>
           <Box sx={{ 
             display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center',
-            gap: 1
+            flexDirection: 'column',
+            gap: 2,
+            width: '100%'
           }}>
-            <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.75rem' }}>
-              Showing {((page - 1) * pagination.limit) + 1} to{' '}
-              {Math.min(page * pagination.limit, pagination.total)} of{' '}
-              {pagination.total} todos
-            </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Select
-                value={pagination.limit.toString()}
-                onChange={onLimitChange}
-                size="small"
-                sx={{ 
-                  minWidth: 80,
-                  height: 28,
-                  '& .MuiSelect-select': {
-                    py: 0.5
-                  }
-                }}
-              >
-                {[5, 10, 20, 50].map((value) => (
-                  <MenuItem key={value} value={value}>
-                    {value} per page
-                  </MenuItem>
-                ))}
-              </Select>
-              <Pagination
-                count={pagination.pages}
-                page={page}
-                onChange={onPageChange}
-                color="primary"
-                showFirstButton
-                showLastButton
-                size="small"
-              />
+            <Box sx={{ 
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 2,
+              width: '100%'
+            }}>
+              <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                width: '100%',
+                justifyContent: 'center'
+              }}>
+                <Typography 
+                  variant="body2" 
+                  color="text.secondary" 
+                  sx={{ 
+                    fontSize: '0.75rem',
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  {((page - 1) * pagination.limit) + 1}-{Math.min(page * pagination.limit, pagination.total)} of {pagination.total}
+                </Typography>
+                <Select
+                  value={pagination.limit.toString()}
+                  onChange={onLimitChange}
+                  size="small"
+                  sx={{ 
+                    minWidth: 65,
+                    height: 32,
+                    '& .MuiSelect-select': {
+                      py: 0.5,
+                      px: 1
+                    }
+                  }}
+                >
+                  {[5, 10, 20, 50].map((value) => (
+                    <MenuItem key={value} value={value}>
+                      {value}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Box>
+              <Box sx={{ 
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'center'
+              }}>
+                <Pagination
+                  count={pagination.pages}
+                  page={page}
+                  onChange={onPageChange}
+                  color="primary"
+                  size="small"
+                  siblingCount={0}
+                  boundaryCount={1}
+                  sx={{
+                    '& .MuiPaginationItem-root': {
+                      minWidth: 30,
+                      height: 30,
+                      margin: '0 1px',
+                      fontSize: '0.875rem',
+                      [theme.breakpoints.down('sm')]: {
+                        minWidth: 24,
+                        height: 24,
+                        margin: '0 0.5px',
+                        fontSize: '0.75rem'
+                      }
+                    },
+                    [theme.breakpoints.down('sm')]: {
+                      '& .MuiPagination-ul': {
+                        gap: '2px'
+                      }
+                    }
+                  }}
+                />
+              </Box>
             </Box>
           </Box>
         </CardContent>

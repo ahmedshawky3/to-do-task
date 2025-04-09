@@ -12,6 +12,7 @@ import { Todo, TodoFilters as TodoFiltersType, PaginationData, SortOptions } fro
 import Header from '../components/common/Header';
 import TodoFiltersComponent from '../components/features/todos/TodoFilters';
 import TodoList from '../components/features/todos/TodoList';
+import { useTheme } from '@mui/material/styles';
 
 const Main: React.FC = () => {
     const navigate = useNavigate();
@@ -111,6 +112,8 @@ const Main: React.FC = () => {
         setPage(1);
     };
 
+    const theme = useTheme();
+
     return (
     <Container maxWidth="md">
       <Box sx={{ py: 1 }}>
@@ -134,7 +137,13 @@ const Main: React.FC = () => {
 
         <Card sx={{ 
           ...commonStyles.card,
-          backgroundColor: 'grey.50'
+          backgroundColor: 'grey.50',
+          [theme.breakpoints.down('sm')]: {
+            '& .MuiCardContent-root': {
+              py: 1,
+              px: 1
+            }
+          }
         }}>
           <TodoList
             todos={todos}

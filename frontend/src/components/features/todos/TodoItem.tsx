@@ -266,26 +266,30 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onTodoUpdated, onDelete, filt
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2, width: '100%' }}>
               <Box sx={{ 
                 display: 'flex', 
-                alignItems: 'center', 
+                flexDirection: 'column',
                 gap: 1.5, 
-                flexWrap: 'wrap', 
                 flex: 1,
                 minWidth: 0,
-                maxWidth: 'calc(100% - 200px)' // Reserve space for actions
+                [theme.breakpoints.down('sm')]: {
+                  flexDirection: 'column',
+                  gap: 1
+                }
               }}>
-                <Typography 
-                  variant="h6" 
-                  component="div"
+                <Typography
+                  variant="h6"
                   sx={{
-                    fontSize: '1.1rem',
                     fontWeight: 600,
-                    color: 'text.primary',
-                    opacity: localTodo.isDeleted ? 0.6 : 1,
-                    flex: '1 1 auto',
-                    minWidth: 0,
+                    wordBreak: 'break-word',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap'
+                    display: '-webkit-box',
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical',
+                    [theme.breakpoints.down('sm')]: {
+                      fontSize: '1rem',
+                      WebkitLineClamp: 3,
+                      width: '100%'
+                    }
                   }}
                 >
                   {localTodo.title}
@@ -295,10 +299,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onTodoUpdated, onDelete, filt
                     display: 'flex', 
                     alignItems: 'center', 
                     gap: 1,
-                    flexWrap: 'nowrap',
-                    flexDirection: 'row',
-                    flex: '0 0 auto',
-                    minWidth: 'fit-content'
+                    flexWrap: 'wrap'
                   }}>
                     <Chip
                       label={formatDate(localTodo.dueDate)}
@@ -345,8 +346,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onTodoUpdated, onDelete, filt
                 gap: 1,
                 flex: '0 0 auto',
                 ml: 2,
-                minWidth: 'fit-content',
-                maxWidth: '180px' // Limit the width of the actions container
+                minWidth: 'fit-content'
               }}>
                 <Tooltip title="Click to change status">
                   <Box 
@@ -377,6 +377,55 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onTodoUpdated, onDelete, filt
                     />
                   </Box>
                 </Tooltip>
+              </Box>
+            </Box>
+            <Typography 
+              color="text.secondary" 
+              sx={{ 
+                mb: 2,
+                opacity: localTodo.isDeleted ? 0.6 : 0.87,
+                fontSize: '0.9375rem',
+                lineHeight: 1.5
+              }}
+            >
+              {localTodo.description}
+            </Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 1 }}>
+              <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                <Box sx={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: 0.75,
+                  py: 0.5,
+                  px: 1,
+                  borderRadius: 1,
+                  bgcolor: 'action.hover',
+                  '&::before': {
+                    content: '""',
+                    width: 8,
+                    height: 8,
+                    borderRadius: '50%',
+                    backgroundColor: CATEGORY_COLORS[localTodo.category]
+                  }
+                }}>
+                  <Typography 
+                    variant="body2" 
+                    sx={{
+                      color: 'text.primary',
+                      fontSize: '0.8125rem',
+                      fontWeight: 500
+                    }}
+                  >
+                    {localTodo.category.charAt(0).toUpperCase() + localTodo.category.slice(1)}
+                  </Typography>
+                </Box>
+              </Box>
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: 1,
+                ml: 'auto'
+              }}>
                 {!localTodo.isDeleted && (
                   <>
                     <Tooltip title="Edit">
@@ -434,46 +483,6 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onTodoUpdated, onDelete, filt
                     </IconButton>
                   </Tooltip>
                 )}
-              </Box>
-            </Box>
-            <Typography 
-              color="text.secondary" 
-              sx={{ 
-                mb: 2,
-                opacity: localTodo.isDeleted ? 0.6 : 0.87,
-                fontSize: '0.9375rem',
-                lineHeight: 1.5
-              }}
-            >
-              {localTodo.description}
-            </Typography>
-            <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 1 }}>
-              <Box sx={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: 0.75,
-                py: 0.5,
-                px: 1,
-                borderRadius: 1,
-                bgcolor: 'action.hover',
-                '&::before': {
-                  content: '""',
-                  width: 8,
-                  height: 8,
-                  borderRadius: '50%',
-                  backgroundColor: CATEGORY_COLORS[localTodo.category]
-                }
-              }}>
-                <Typography 
-                  variant="body2" 
-                  sx={{
-                    color: 'text.primary',
-                    fontSize: '0.8125rem',
-                    fontWeight: 500
-                  }}
-                >
-                  {localTodo.category.charAt(0).toUpperCase() + localTodo.category.slice(1)}
-                </Typography>
               </Box>
             </Box>
           </Box>
