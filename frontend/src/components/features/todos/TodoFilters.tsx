@@ -89,14 +89,14 @@ const TodoFiltersComponent: React.FC<TodoFiltersProps> = ({
       <Box 
         sx={{ 
           display: 'flex',
-          gap: 1,
-          alignItems: 'center',
+          flexDirection: { xs: 'column', sm: 'row' },
+          gap: { xs: 2, sm: 1 },
+          alignItems: 'stretch',
           width: '100%',
           maxWidth: '100%',
           mx: 'auto',
-          '& > *:first-of-type': {
-            flex: '1 1 auto',
-            minWidth: 0
+          '& > *': {
+            width: { xs: '100%', sm: 'auto' }
           }
         }}
       >
@@ -106,8 +106,8 @@ const TodoFiltersComponent: React.FC<TodoFiltersProps> = ({
               value={filters.search}
               onChange={(e) => handleFilterChange('search', e.target.value)}
               sx={{ 
-                flex: 2,
-                minWidth: '800px',
+                flex: { xs: '1 1 auto', sm: 2 },
+                mb: { xs: 1, sm: 0 },
                 '& .MuiOutlinedInput-root': {
                   borderRadius: 1.5,
                   backgroundColor: 'background.paper',
@@ -170,7 +170,7 @@ const TodoFiltersComponent: React.FC<TodoFiltersProps> = ({
               }}
             />
 
-        <FormControl size="small" sx={{ minWidth: 200 }}>
+        <FormControl size="small" sx={{ width: { xs: '100%', sm: 200 }, mb: { xs: 1, sm: 0 } }}>
           <InputLabel>Sort By</InputLabel>
           <Select
             value={`${sortOptions.sortBy}-${sortOptions.sortOrder}`}
@@ -188,7 +188,14 @@ const TodoFiltersComponent: React.FC<TodoFiltersProps> = ({
           </Select>
         </FormControl>
 
-        <Box sx={{ display: 'flex', gap: 1, flexShrink: 0 }}>
+        <Box sx={{ 
+          display: 'flex', 
+          gap: 1, 
+          flexShrink: 0,
+          width: { xs: '100%', sm: 'auto' },
+          justifyContent: { xs: 'space-between', sm: 'flex-start' },
+          mb: { xs: 1, sm: 0 }
+        }}>
           <Tooltip title={showFilters ? "Hide filters" : "Show filters"}>
             <IconButton
               onClick={() => setShowFilters(!showFilters)}
@@ -203,8 +210,7 @@ const TodoFiltersComponent: React.FC<TodoFiltersProps> = ({
                 borderRadius: 1.5,
                 p: 1,
                 height: '36px',
-                minWidth: '90px',
-                width: 'auto',
+                width: { xs: '48%', sm: 'auto' },
                 display: 'flex',
                 gap: 1,
                 transition: 'all 0.2s ease-in-out',
@@ -226,7 +232,7 @@ const TodoFiltersComponent: React.FC<TodoFiltersProps> = ({
                   borderRadius: 1.5,
                   p: 1,
                   height: '36px',
-                  width: '36px',
+                  width: { xs: '48%', sm: '36px' },
                   transition: 'all 0.2s ease-in-out',
                 }}
               >
