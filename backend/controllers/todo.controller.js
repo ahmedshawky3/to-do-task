@@ -66,7 +66,7 @@ const getAllTodos = async (req, res) => {
 // Create new todo
 const createTodo = async (req, res) => {
     try {
-        const { title, description, category, dueDate } = req.body;
+        const { title, description, category, dueDate, status } = req.body;
 
         if (!title) {
             return res.status(400).json({
@@ -81,7 +81,7 @@ const createTodo = async (req, res) => {
             category,
             dueDate: dueDate ? new Date(dueDate) : null,
             user: req.user.id,
-            status: 'pending',
+            status: status || 'pending',
             isDeleted: false
         });
 
@@ -102,7 +102,7 @@ const createTodo = async (req, res) => {
 const updateTodo = async (req, res) => {
     try {
         const { id } = req.params;
-        const { title, description, category, dueDate } = req.body;
+        const { title, description, category, dueDate, status } = req.body;
         
         const todo = await Todo.findOne({ _id: id, user: req.user._id });
         
@@ -114,6 +114,9 @@ const updateTodo = async (req, res) => {
         todo.description = description;
         todo.category = category;
         todo.dueDate = dueDate ? new Date(dueDate) : null;
+        if (status) {
+            todo.status = status;
+        }
         
         await todo.save();
         
