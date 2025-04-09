@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    baseURL: `${process.env.REACT_APP_API_URL}/api` || 'https://to-do-task-backend.onrender.com/api',
+    baseURL: process.env.REACT_APP_API_URL ? `${process.env.REACT_APP_API_URL}/api` : 'http://localhost:5000/api',
     headers: {
         'Content-Type': 'application/json'
     }

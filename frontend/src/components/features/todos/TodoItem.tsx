@@ -259,8 +259,16 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onTodoUpdated, onDelete, filt
           </Box>
         ) : (
           <Box>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2, width: '100%' }}>
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: 1.5, 
+                flexWrap: 'wrap', 
+                flex: 1,
+                minWidth: 0,
+                maxWidth: 'calc(100% - 200px)' // Reserve space for actions
+              }}>
                 <Typography 
                   variant="h6" 
                   component="div"
@@ -268,13 +276,26 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onTodoUpdated, onDelete, filt
                     fontSize: '1.1rem',
                     fontWeight: 600,
                     color: 'text.primary',
-                    opacity: localTodo.isDeleted ? 0.6 : 1
+                    opacity: localTodo.isDeleted ? 0.6 : 1,
+                    flex: '1 1 auto',
+                    minWidth: 0,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
                   }}
                 >
                   {localTodo.title}
                 </Typography>
                 {localTodo.dueDate && !localTodo.isDeleted && (
-                  <>
+                  <Box sx={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: 1,
+                    flexWrap: 'nowrap',
+                    flexDirection: 'row',
+                    flex: '0 0 auto',
+                    minWidth: 'fit-content'
+                  }}>
                     <Chip
                       label={formatDate(localTodo.dueDate)}
                       size="small"
@@ -301,7 +322,9 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onTodoUpdated, onDelete, filt
                         py: 0.5,
                         px: 1,
                         borderRadius: 1,
-                        fontSize: '0.8125rem'
+                        fontSize: '0.8125rem',
+                        whiteSpace: 'nowrap',
+                        minWidth: 'fit-content'
                       }}
                     >
                       <AccessTimeIcon fontSize="small" />
@@ -309,10 +332,18 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onTodoUpdated, onDelete, filt
                         ? `${Math.abs(getDaysUntilDue(localTodo.dueDate))} days passed`
                         : `${getDaysUntilDue(localTodo.dueDate)} days left`}
                     </Typography>
-                  </>
+                  </Box>
                 )}
               </Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: 1,
+                flex: '0 0 auto',
+                ml: 2,
+                minWidth: 'fit-content',
+                maxWidth: '180px' // Limit the width of the actions container
+              }}>
                 <Tooltip title="Click to change status">
                   <Box 
                     onClick={!loading ? handleStatusClick : undefined} 

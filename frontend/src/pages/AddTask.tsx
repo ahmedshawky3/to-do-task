@@ -131,6 +131,14 @@ const AddTask: React.FC = () => {
                 variant="outlined"
                 onClick={() => navigate('/todos')}
                 startIcon={<ArrowBackIcon />}
+                sx={{
+                  minWidth: 'fit-content',
+                  whiteSpace: 'nowrap',
+                  '& .MuiButton-label': {
+                    display: 'inline-block',
+                    whiteSpace: 'nowrap'
+                  }
+                }}
               >
                 Back to Tasks
               </Button>
@@ -139,6 +147,14 @@ const AddTask: React.FC = () => {
                 variant="contained"
                 disabled={loading}
                 startIcon={<AddIcon />}
+                sx={{
+                  minWidth: 'fit-content',
+                  whiteSpace: 'nowrap',
+                  '& .MuiButton-label': {
+                    display: 'inline-block',
+                    whiteSpace: 'nowrap'
+                  }
+                }}
               >
                 {loading ? 'Adding...' : 'Add Task'}
               </Button>

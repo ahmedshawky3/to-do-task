@@ -13,6 +13,7 @@ import {
 import axios from '../../../api/axios';
 import { commonStyles } from '../../../theme';
 import { CATEGORIES } from '../../../constants/todo';
+import AddIcon from '@mui/icons-material/Add';
 
 interface TodoFormProps {
   onTodoCreated: () => void;
@@ -123,18 +124,40 @@ const TodoForm: React.FC<TodoFormProps> = ({ onTodoCreated }) => {
           InputLabelProps={{ shrink: true }}
           sx={commonStyles.input}
         />
-        <Button
-          type="submit"
-          variant="contained"
-          sx={{
-            ...commonStyles.button,
-            alignSelf: 'flex-end',
-            minWidth: '120px'
-          }}
-          disabled={loading}
-        >
-          {loading ? 'Creating...' : 'Add Task'}
-        </Button>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+            disabled={loading}
+            startIcon={<AddIcon />}
+            sx={{
+              borderRadius: 2,
+              px: 1.5,
+              py: 1.5,
+              minWidth: { xs: '80px', sm: 'auto' },
+              whiteSpace: 'nowrap',
+              width: { xs: '100%', sm: 'auto' },
+              fontSize: { xs: '0.875rem', sm: '1rem' },
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              '& .MuiButton-startIcon': {
+                marginRight: 0.5,
+                marginLeft: 0
+              },
+              '& .MuiButton-label': {
+                display: 'inline-block',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis'
+              }
+            }}
+          >
+            {loading ? 'Creating...' : 'Add Task'}
+          </Button>
+        </Box>
       </Box>
     </Box>
   );
