@@ -38,7 +38,9 @@ app.use(cors({
   origin: [
     'http://localhost:3000',
     'https://to-do-task-lilac.vercel.app',
-    'https://to-do-task.vercel.app'
+    'https://to-do-task.vercel.app',
+    'https://to-do-task-git-main-ahmeds-projects-9d9b0ea2.vercel.app',
+    'https://to-do-task-*.vercel.app' // Wildcard for all Vercel preview deployments
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
