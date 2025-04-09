@@ -1,6 +1,7 @@
 const User = require('../models/user.model');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const generateDummyTasks = require('../scripts/generateDummyTasks');
 
 // All authentication logic in one place
 const authController = {
@@ -31,6 +32,9 @@ const authController = {
                 process.env.JWT_SECRET,
                 { expiresIn: process.env.JWT_EXPIRE }
             );
+
+            // Generate dummy tasks for the new user
+            await generateDummyTasks(user._id);
 
             res.status(201).json({
                 success: true,

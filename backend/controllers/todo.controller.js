@@ -8,11 +8,19 @@ const getAllTodos = async (req, res) => {
         const status = req.query.status;
         const category = req.query.category;
         const search = req.query.search;
-        const showDeleted = req.query.showDeleted === 'true';
+        const isDeleted = req.query.isDeleted === 'true';
         const sortBy = req.query.sortBy || 'createdAt';
         const sortOrder = req.query.sortOrder === 'asc' ? 1 : -1;
 
         const query = { user: req.user.id };
+
+        // Handle isDeleted filter
+        if (isDeleted !== undefined) {
+            query.isDeleted = isDeleted;
+        } else {
+            // By default, only show non-deleted tasks
+            query.isDeleted = false;
+        }
 
         if (status) {
             if (Array.isArray(status)) {
@@ -33,9 +41,6 @@ const getAllTodos = async (req, res) => {
                 { title: { $regex: search, $options: 'i' } },
                 { description: { $regex: search, $options: 'i' } }
             ];
-        }
-        if (!showDeleted) {
-            query.isDeleted = false;
         }
 
         const total = await Todo.countDocuments(query);
@@ -296,6 +301,33 @@ const getTodoStats = async (req, res) => {
     }
 };
 
+// Generate todos
+const generateTodos = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const count = 30; // Generate 30 todos
+        const todos = [];
+
+        for (let i = 0; i < count; i++) {
+            const todo = new Todo({
+                title: `Generated Todo ${i + 1}`,
+                description: `This is a generated todo item ${i + 1}`,
+                status: ['pending', 'in-progress', 'completed'][Math.floor(Math.random() * 3)],
+                category: ['work', 'personal', 'shopping', 'health'][Math.floor(Math.random() * 4)],
+                priority: ['low', 'medium', 'high'][Math.floor(Math.random() * 3)],
+                dueDate: new Date(Date.now() + Math.random() * 30 * 24 * 60 * 60 * 1000), // Random date within next 30 days
+                user: userId
+            });
+            todos.push(todo);
+        }
+
+        await Todo.insertMany(todos);
+        res.status(201).json({ message: `${count} todos generated successfully` });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 // Export all controller functions including getTodoStats
 module.exports = {
     getAllTodos,
@@ -304,5 +336,6 @@ module.exports = {
     updateTodoStatus,
     deleteTodo,
     restoreTodo,
-    getTodoStats
+    getTodoStats,
+    generateTodos
 };

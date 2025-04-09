@@ -50,6 +50,14 @@ const Main: React.FC = () => {
           page,
           limit: pagination.limit,
           ...filters,
+          isDeleted: filters.showDeleted,
+          // Clear other filters when showing deleted tasks
+          ...(filters.showDeleted ? {
+            status: [],
+            category: [],
+            search: '',
+            dueDate: ''
+          } : {}),
           ...sortOptions
         }
       });

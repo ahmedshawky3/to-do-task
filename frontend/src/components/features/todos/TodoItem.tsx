@@ -30,6 +30,7 @@ import { CATEGORY_COLORS, STATUS_COLORS, CATEGORY_OPTIONS, CategoryType, StatusT
 import { formatDate, isOverdue, getDaysUntilDue } from '../../../utils/date';
 import { todoService } from '../../../services/todoService';
 import { theme, commonStyles } from '../../../theme';
+import axios from 'axios';
 
 const TodoItem: React.FC<TodoItemProps> = ({ todo, onTodoUpdated, onDelete, filters }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -43,6 +44,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onTodoUpdated, onDelete, filt
     status: todo.status as StatusType,
     dueDate: todo.dueDate || ''
   });
+  const [successMessage, setSuccessMessage] = useState('');
 
   const handleStatusClick = async (event: React.MouseEvent) => {
     event.preventDefault();
@@ -113,13 +115,15 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onTodoUpdated, onDelete, filt
   const handleRestore = async () => {
     try {
       setLoading(true);
-      const response = await todoService.restoreTodo(localTodo._id);
+      const response = await todoService.restoreTodo(todo._id);
       setLocalTodo(response.data);
-      if (onDelete && !filters.showDeleted) {
-        onDelete(localTodo._id);
+      if (onDelete) {
+        onDelete(todo._id);
       }
+      setSuccessMessage('Task restored successfully');
+      setTimeout(() => setSuccessMessage(''), 3000);
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to restore todo');
+      setError(err.response?.data?.message || 'Failed to restore task');
     } finally {
       setLoading(false);
     }

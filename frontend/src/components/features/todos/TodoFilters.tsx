@@ -253,7 +253,19 @@ const TodoFiltersComponent: React.FC<TodoFiltersProps> = ({
               control={
                 <Switch
                   checked={filters.showDeleted}
-                  onChange={(e) => handleFilterChange('showDeleted', e.target.checked)}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      onFilterChange({
+                        status: [],
+                        category: [],
+                        search: '',
+                        showDeleted: true,
+                        dueDate: ''
+                      });
+                    } else {
+                      handleFilterChange('showDeleted', false);
+                    }
+                  }}
                 />
               }
               label="Show Deleted Tasks"
