@@ -1,0 +1,23 @@
+# Backend Dependencies
+express==4.21.2
+mongoose==7.8.6
+bcryptjs==2.4.3
+jsonwebtoken==9.0.2
+cors==2.8.5
+dotenv==16.4.7
+express-validator==7.2.1
+morgan==1.10.0
+
+# Frontend Dependencies
+react==19.1.0
+react-dom==19.1.0
+react-router-dom==7.5.0
+@mui/material==7.0.1
+@mui/icons-material==7.0.1
+@emotion/react==11.14.0
+@emotion/styled==11.14.0
+date-fns==4.1.0
+
+# Development Tools
+typescript==5.8.3
+nodemon==2.0.22 
