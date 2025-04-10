@@ -35,7 +35,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
         sx={{ 
           fontWeight: 600,
           color: 'text.primary',
-          mb: 3
+          mb: 3,
+          textAlign: 'center'
         }}
       >
         Create Account
