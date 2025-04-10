@@ -94,11 +94,34 @@ const TodoList: React.FC<TodoListProps> = ({
 
         <Card sx={commonStyles.card}>
           <CardContent>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-              <Typography variant="body2" color="text.secondary">
-                Showing 0 to 0 of {pagination.total} todos
+            <Box sx={{ 
+              display: 'flex', 
+              flexDirection: { xs: 'column', sm: 'row' },
+              justifyContent: 'space-between', 
+              alignItems: { xs: 'center', sm: 'center' },
+              gap: { xs: 2, sm: 0 },
+              mb: 2 
+            }}>
+              <Typography 
+                variant="body2" 
+                color="text.secondary"
+                sx={{ 
+                  textAlign: { xs: 'center', sm: 'left' },
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  maxWidth: '100%'
+                }}
+              >
+                Showing {((page - 1) * pagination.limit) + 1} to {Math.min(page * pagination.limit, pagination.total)} of {pagination.total} todos
               </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: 2,
+                flexWrap: 'wrap',
+                justifyContent: { xs: 'center', sm: 'flex-end' }
+              }}>
                 <Select
                   value={pagination.limit.toString()}
                   onChange={onLimitChange}
@@ -118,104 +141,6 @@ const TodoList: React.FC<TodoListProps> = ({
                   color="primary"
                   showFirstButton
                   showLastButton
-                />
-              </Box>
-            </Box>
-          </CardContent>
-        </Card>
-      </>
-    );
-  }
-
-  return (
-    <>
-      {todos.map((todo) => (
-        <TodoItem
-          key={todo._id}
-          todo={todo}
-          onTodoUpdated={onTodoUpdate}
-          onDelete={onDelete}
-          filters={filters}
-        />
-      ))}
-
-      <Card sx={{
-        ...commonStyles.card,
-        position: 'sticky',
-        bottom: 0,
-        zIndex: 1,
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-        borderRadius: '8px',
-        transition: 'none',
-        '&:hover': {
-          transform: 'none',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-        }
-      }}>
-        <CardContent sx={{ py: 2, px: 1 }}>
-          <Box sx={{ 
-            display: 'flex', 
-            flexDirection: 'column',
-            gap: 2,
-            width: '100%'
-          }}>
-            <Box sx={{ 
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: 2,
-              width: '100%'
-            }}>
-              <Box sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1,
-                width: '100%',
-                justifyContent: 'center'
-              }}>
-                <Typography 
-                  variant="body2" 
-                  color="text.secondary" 
-                  sx={{ 
-                    fontSize: '0.75rem',
-                    whiteSpace: 'nowrap'
-                  }}
-                >
-                  {((page - 1) * pagination.limit) + 1}-{Math.min(page * pagination.limit, pagination.total)} of {pagination.total}
-                </Typography>
-                <Select
-                  value={pagination.limit.toString()}
-                  onChange={onLimitChange}
-                  size="small"
-                  sx={{ 
-                    minWidth: 65,
-                    height: 32,
-                    '& .MuiSelect-select': {
-                      py: 0.5,
-                      px: 1
-                    }
-                  }}
-                >
-                  {[5, 10, 20, 50].map((value) => (
-                    <MenuItem key={value} value={value}>
-                      {value}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Box>
-              <Box sx={{ 
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'center'
-              }}>
-                <Pagination
-                  count={pagination.pages}
-                  page={page}
-                  onChange={onPageChange}
-                  color="primary"
-                  size="small"
-                  siblingCount={0}
-                  boundaryCount={1}
                   sx={{
                     '& .MuiPaginationItem-root': {
                       minWidth: 30,
@@ -237,6 +162,94 @@ const TodoList: React.FC<TodoListProps> = ({
                   }}
                 />
               </Box>
+            </Box>
+          </CardContent>
+        </Card>
+      </>
+    );
+  }
+
+  return (
+    <>
+      {todos.map((todo) => (
+        <TodoItem
+          key={todo._id}
+          todo={todo}
+          onTodoUpdated={onTodoUpdate}
+          onDelete={onDelete}
+          filters={filters}
+        />
+      ))}
+
+      <Card sx={commonStyles.card}>
+        <CardContent>
+          <Box sx={{ 
+            display: 'flex', 
+            flexDirection: { xs: 'column', sm: 'row' },
+            justifyContent: 'space-between', 
+            alignItems: { xs: 'center', sm: 'center' },
+            gap: { xs: 2, sm: 0 },
+            mb: 2 
+          }}>
+            <Typography 
+              variant="body2" 
+              color="text.secondary"
+              sx={{ 
+                textAlign: { xs: 'center', sm: 'left' },
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                maxWidth: '100%'
+              }}
+            >
+              Showing {((page - 1) * pagination.limit) + 1} to {Math.min(page * pagination.limit, pagination.total)} of {pagination.total} todos
+            </Typography>
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 2,
+              flexWrap: 'wrap',
+              justifyContent: { xs: 'center', sm: 'flex-end' }
+            }}>
+              <Select
+                value={pagination.limit.toString()}
+                onChange={onLimitChange}
+                size="small"
+                sx={{ minWidth: 100 }}
+              >
+                {[5, 10, 20, 50].map((value) => (
+                  <MenuItem key={value} value={value}>
+                    {value} per page
+                  </MenuItem>
+                ))}
+              </Select>
+              <Pagination
+                count={pagination.pages}
+                page={page}
+                onChange={onPageChange}
+                color="primary"
+                showFirstButton
+                showLastButton
+                sx={{
+                  '& .MuiPaginationItem-root': {
+                    minWidth: 30,
+                    height: 30,
+                    margin: '0 1px',
+                    fontSize: '0.875rem',
+                    [theme.breakpoints.down('sm')]: {
+                      minWidth: 24,
+                      height: 24,
+                      margin: '0 0.5px',
+                      fontSize: '0.75rem'
+                    }
+                  },
+                  [theme.breakpoints.down('sm')]: {
+                    '& .MuiPagination-ul': {
+                      gap: '2px'
+                    }
+                  }
+                }}
+              />
             </Box>
           </Box>
         </CardContent>

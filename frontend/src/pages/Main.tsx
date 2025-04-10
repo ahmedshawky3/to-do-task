@@ -117,7 +117,7 @@ const Main: React.FC = () => {
     return (
     <Container maxWidth="md">
       <Box sx={{ py: 1 }}>
-        <Header showAddButton={todos.length > 0} />
+        <Header showAddButton={true} />
         
         <Box sx={{ 
           mb: 3,
