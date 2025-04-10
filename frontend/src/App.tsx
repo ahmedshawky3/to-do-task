@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { theme } from './theme';
 import Login from './pages/Login';
-import Register from './components/features/auth/RegisterForm';
+import Register from './pages/Register';
 import Main from './pages/Main';
 import AddTask from './pages/AddTask';
 import PrivateRoute from './components/features/auth/PrivateRoute';

@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Paper,
-  TextField,
-  Button,
-  Typography,
   Box,
-  Alert,
-  Link,
   ThemeProvider,
   createTheme
 } from '@mui/material';
 import axios from '../api/axios';
 import { LoginForm } from '../types/auth';
+import LoginFormComponent from '../components/features/auth/LoginForm';
 
 // Common theme and styles
 const theme = createTheme({
@@ -72,22 +68,6 @@ const styles = {
     maxWidth: '450px',
     mx: 'auto', // margin left and right auto
     boxShadow: '0 3px 10px rgb(0 0 0 / 0.2)'
-  },
-  form: {
-    width: '100%',
-    mt: 2
-  },
-  submitButton: {
-    mt: 3,
-    mb: 2,
-    height: '48px'
-  },
-  link: {
-    textDecoration: 'none',
-    color: 'primary.main',
-    '&:hover': {
-      textDecoration: 'underline'
-    }
   }
 };
 
@@ -100,8 +80,15 @@ const Login: React.FC = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission
     setError('');
     setLoading(true);
 
@@ -111,11 +98,15 @@ const Login: React.FC = () => {
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('user', JSON.stringify(response.data.user));
-        navigate('/todos');
+        navigate('/todos', { replace: true });
       } else {
         setError('Login failed: No token received');
       }
     } catch (err: any) {
+      // Only log server errors (500s) to console
+      if (err.response?.status >= 500) {
+        console.error('Server error during login:', err);
+      }
       setError(err.response?.data?.message || 'Login failed. Please check your credentials and try again.');
     } finally {
       setLoading(false);
@@ -127,86 +118,13 @@ const Login: React.FC = () => {
       <Box sx={styles.pageContainer}>
         <Container maxWidth="sm">
           <Paper elevation={0} sx={styles.paper}>
-            <Typography 
-              variant="h4" 
-              component="h1" 
-              gutterBottom 
-              sx={{ 
-                fontWeight: 600,
-                color: 'text.primary',
-                mb: 3
-              }}
-            >
-              Welcome Back
-            </Typography>
-            <Typography 
-              variant="body1" 
-              sx={{ 
-                color: 'text.secondary',
-                mb: 4,
-                textAlign: 'center'
-              }}
-            >
-              Sign in to continue to your account
-            </Typography>
-
-            {error && (
-              <Alert 
-                severity="error" 
-                sx={{ 
-                  width: '100%', 
-                  mb: 2,
-                  borderRadius: '8px'
-                }}
-              >
-                {error}
-              </Alert>
-            )}
-
-            <Box component="form" onSubmit={handleSubmit} sx={styles.form}>
-              <TextField
-                label="Email Address"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                margin="normal"
-                required
-                sx={{ mb: 2 }}
-              />
-
-              <TextField
-                label="Password"
-                name="password"
-                type="password"
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                margin="normal"
-                required
-                sx={{ mb: 3 }}
-              />
-
-              <Button
-                type="submit"
-                disabled={loading}
-                sx={styles.submitButton}
-              >
-                {loading ? 'Signing in...' : 'Sign In'}
-              </Button>
-
-              <Box sx={{ textAlign: 'center', mt: 2 }}>
-                <Typography variant="body2" color="text.secondary">
-                  Don't have an account?{' '}
-                  <Link
-                    component={RouterLink}
-                    to="/register"
-                    sx={styles.link}
-                  >
-                    Register
-                  </Link>
-                </Typography>
-              </Box>
-            </Box>
+            <LoginFormComponent
+              formData={formData}
+              error={error}
+              loading={loading}
+              onFormChange={handleFormChange}
+              onSubmit={handleSubmit}
+            />
           </Paper>
         </Container>
       </Box>

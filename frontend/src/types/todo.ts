@@ -1,3 +1,5 @@
+import { SelectChangeEvent } from '@mui/material/Select';
+
 export interface Todo {
   _id: string;
   title: string;
@@ -26,15 +28,23 @@ export interface TodoFormProps {
 
 export interface TodoItemProps {
   todo: Todo;
-  onTodoUpdated: () => void;
+  onTodoUpdated: (updatedTodo: Todo) => void;
   onDelete: (id: string) => void;
   filters: TodoFilters;
 }
 
 export interface TodoListProps {
   todos: Todo[];
-  onTodoUpdated: () => void;
+  loading: boolean;
+  error: string;
+  page: number;
+  pagination: PaginationData;
+  filters: TodoFilters;
+  onPageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
+  onLimitChange: (event: SelectChangeEvent) => void;
+  onTodoUpdate: (updatedTodo: Todo) => void;
   onDelete: (id: string) => void;
+  onAddNewTask: () => void;
 }
 
 export interface TodoFilters {

@@ -25,7 +25,8 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response?.status === 401) {
+        // Only handle 401 errors for protected routes, not for login attempts
+        if (error.response?.status === 401 && error.config.url !== '/auth/login') {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             window.location.href = '/login';

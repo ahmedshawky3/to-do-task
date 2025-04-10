@@ -26,7 +26,7 @@ interface TodoListProps {
   filters: TodoFilters;
   onPageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
   onLimitChange: (event: SelectChangeEvent) => void;
-  onTodoUpdate: () => Promise<void>;
+  onTodoUpdate: (updatedTodo: Todo) => void;
   onDelete: (id: string) => void;
   onAddNewTask: () => void;
 }
@@ -45,6 +45,10 @@ const TodoList: React.FC<TodoListProps> = ({
   onAddNewTask
 }) => {
   const theme = useTheme();
+
+  const handleTodoUpdate = (updatedTodo: Todo) => {
+    onTodoUpdate(updatedTodo);
+  };
 
   if (loading) {
     return (
@@ -175,7 +179,7 @@ const TodoList: React.FC<TodoListProps> = ({
         <TodoItem
           key={todo._id}
           todo={todo}
-          onTodoUpdated={onTodoUpdate}
+          onTodoUpdated={handleTodoUpdate}
           onDelete={onDelete}
           filters={filters}
         />

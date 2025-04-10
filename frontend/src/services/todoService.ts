@@ -19,7 +19,7 @@ export const todoService = {
 
   async updateTodo(id: string, todo: Partial<Todo>) {
     const response = await axios.put(`/todos/${id}`, todo);
-    return response.data;
+    return { data: response.data };
   },
 
   async deleteTodo(id: string) {
