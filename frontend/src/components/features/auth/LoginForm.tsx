@@ -45,7 +45,8 @@ const LoginForm: React.FC<LoginFormProps> = ({
         sx={{ 
           fontWeight: 600,
           color: 'text.primary',
-          mb: 3
+          mb: 3,
+          textAlign: 'center'
         }}
       >
         Welcome Back
