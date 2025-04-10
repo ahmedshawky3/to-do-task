@@ -27,7 +27,7 @@ import {
 } from '@mui/icons-material';
 import { TodoItemProps } from '../../../types/todo';
 import { CATEGORY_COLORS, STATUS_COLORS, CATEGORY_OPTIONS, CategoryType, StatusType } from '../../../constants/todo';
-import { formatDate, isOverdue, getDaysUntilDue } from '../../../utils/date';
+import { formatDate, getDaysUntilDue } from '../../../utils/date';
 import { todoService } from '../../../services/todoService';
 import { theme, commonStyles } from '../../../theme';
 
@@ -305,7 +305,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onTodoUpdated, onDelete, filt
                       label={formatDate(localTodo.dueDate)}
                       size="small"
                       icon={<EventIcon />}
-                      color={isOverdue(localTodo.dueDate) ? 'error' : 'default'}
+                      color="default"
                       sx={{
                         borderRadius: '8px',
                         '& .MuiChip-label': {
@@ -316,12 +316,13 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onTodoUpdated, onDelete, filt
                     <Typography
                       variant="body2"
                       sx={{
-                        color: getDaysUntilDue(localTodo.dueDate) < 0 ? 'error.main' : 'success.main',
+                        color: getDaysUntilDue(localTodo.dueDate) <= 0 ? 'error.main' : 'success.main',
                         fontWeight: 500,
                         display: 'flex',
                         alignItems: 'center',
+                        justifyContent: 'center',
                         gap: 0.5,
-                        bgcolor: getDaysUntilDue(localTodo.dueDate) < 0 
+                        bgcolor: getDaysUntilDue(localTodo.dueDate) <= 0 
                           ? alpha(theme.palette.error.main, 0.1)
                           : alpha(theme.palette.success.main, 0.1),
                         py: 0.5,
@@ -329,12 +330,14 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onTodoUpdated, onDelete, filt
                         borderRadius: 1,
                         fontSize: '0.8125rem',
                         whiteSpace: 'nowrap',
-                        minWidth: 'fit-content'
+                        minWidth: 'fit-content',
+                        height: '100%',
+                        lineHeight: 1.2
                       }}
                     >
                       <AccessTimeIcon fontSize="small" />
-                      {getDaysUntilDue(localTodo.dueDate) < 0
-                        ? `${Math.abs(getDaysUntilDue(localTodo.dueDate))} days passed`
+                      {getDaysUntilDue(localTodo.dueDate) <= 0
+                        ? 'passed'
                         : `${getDaysUntilDue(localTodo.dueDate)} days left`}
                     </Typography>
                   </Box>
